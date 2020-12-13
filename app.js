@@ -10,6 +10,8 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+var allEmployees = [];
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
@@ -70,7 +72,9 @@ function addMembers(answers){
                     }
                 ]).then(function(res){
                     let newMember = new Manager(response.name, response.position, response.id, response.email, res.office);
-                    console.log(newMember);
+                    // console.log(newMember);
+                    allEmployees.push(newMember)
+                    addMoreMembers();
                 });
                 break;
             case 'Engineer':
@@ -82,7 +86,9 @@ function addMembers(answers){
                     }
                 ]).then(function(res){
                     let newMember= new Engineer(response.name, response.position, response.id, response.email, res.link);
-                    console.log(newMember);
+                    // console.log(newMember);
+                    allEmployees.push(newMember)
+                    addMoreMembers();
                 });
                 break;
             case 'Intern':
@@ -94,9 +100,29 @@ function addMembers(answers){
                     }
                 ]).then(function(res){
                     let newMember = new Intern(response.name, response.position, response.id, response.email, res.school);
-                    console.log(newMember);
+                    // console.log(newMember);
+                    allEmployees.push(newMember)
+                    addMoreMembers();
                 });
                 break;
+            
+        }
+    })
+};
+
+function addMoreMembers(){
+    inquirer.prompt([
+        {
+            type:'list',
+            name: 'addMore',
+            message: 'Would you like to add more employees?',
+            choices: ['Yes', 'No']
+        }
+    ]).then(function(response){
+        if (response.addMore === 'Yes'){
+            addMembers();
+        } else if (response.addMore === 'No'){
+            console.log(allEmployees);
         };
     });
 };
