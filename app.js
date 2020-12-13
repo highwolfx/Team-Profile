@@ -145,9 +145,13 @@ function addMoreMembers(){
         if (response.addMore === 'Yes'){
             addMembers();
         } else if (response.addMore === 'No'){
-            render(allEmployees);
+            let renderedEmployees = render(allEmployees);
+            fs.writeFile(outputPath, renderedEmployees, (err) =>
+              err ? console.error(err) : console.log('Commit logged!')
+            );
         };
     });
 };
+
 
 addMembers();
