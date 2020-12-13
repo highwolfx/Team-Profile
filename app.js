@@ -61,3 +61,60 @@ class Engineer extends Employee{
         this.link = link;
     };
 };
+
+
+function prompt(answers){
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: "What is the employee's name?"
+        },
+        {
+            type: 'list',
+            name: 'position',
+            message: 'What is the position of the employee?',
+            choices: ['Manager', 'Engineer', 'Intern']
+        },
+        {
+            type: 'input',
+            name: 'id',
+            message: "What is the employee's ID number?"
+        },
+        {
+            type: 'text',
+            name: 'email',
+            message: "What is the employee's email address?"
+        }
+    ]).then(function(response){
+        switch (response.role){
+            case 'Manager':
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        name: 'office',
+                        message: 'What is their office number?'
+                    }
+                ]);
+                break;
+            case 'Engineer':
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        name: 'link',
+                        message: 'What is their GitHub username?'
+                    }
+                ]);
+                break;
+            case 'Intern':
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        name: 'school',
+                        message: 'What school do they attend?'
+                    }
+                ]);
+                break;                
+        }
+    })
+}
