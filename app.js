@@ -35,35 +35,8 @@ const render = require("./lib/htmlRenderer");
 // for the provided `render` function to work! ```
 
 
-class Employee {
-    constructor(name, id, position, email) {
-        this.name = name;
-        this.id = id;
-        this.position = position;
-        this.email = email;
-    };
-};
 
-class Manager extends Employee{
-    constructor(office){
-        this.office = office;
-    };
-};
-
-class Intern extends Employee{
-    constructor(school){
-        this.school = school;
-    };
-};
-
-class Engineer extends Employee{
-    constructor(link){
-        this.link = link;
-    };
-};
-
-
-function prompt(answers){
+function addMembers(answers){
     return inquirer.prompt([
         {
             type: 'input',
@@ -87,7 +60,7 @@ function prompt(answers){
             message: "What is the employee's email address?"
         }
     ]).then(function(response){
-        switch (response.role){
+        switch (response.position){
             case 'Manager':
                 inquirer.prompt([
                     {
@@ -95,7 +68,10 @@ function prompt(answers){
                         name: 'office',
                         message: 'What is their office number?'
                     }
-                ]);
+                ]).then(function(res){
+                    let newMember = new Manager(response.name, response.position, response.id, response.email, res.office);
+                    console.log(newMember);
+                });
                 break;
             case 'Engineer':
                 inquirer.prompt([
@@ -104,7 +80,10 @@ function prompt(answers){
                         name: 'link',
                         message: 'What is their GitHub username?'
                     }
-                ]);
+                ]).then(function(res){
+                    let newMember= new Engineer(response.name, response.position, response.id, response.email, res.link);
+                    console.log(newMember);
+                });
                 break;
             case 'Intern':
                 inquirer.prompt([
@@ -113,8 +92,13 @@ function prompt(answers){
                         name: 'school',
                         message: 'What school do they attend?'
                     }
-                ]);
-                break;                
-        }
-    })
-}
+                ]).then(function(res){
+                    let newMember = new Intern(response.name, response.position, response.id, response.email, res.school);
+                    console.log(newMember);
+                });
+                break;
+        };
+    });
+};
+
+addMembers();
