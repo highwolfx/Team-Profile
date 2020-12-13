@@ -29,12 +29,6 @@ function addMembers(answers){
             }
         },
         {
-            type: 'list',
-            name: 'position',
-            message: 'What is the position of the employee?',
-            choices: ['Manager', 'Engineer', 'Intern']
-        },
-        {
             type: 'input',
             name: 'id',
             message: "What is the employee's ID number?",
@@ -59,6 +53,12 @@ function addMembers(answers){
                     return true;
                 };
             }
+        },
+        {
+            type: 'list',
+            name: 'position',
+            message: 'What is the position of the employee?',
+            choices: ['Manager', 'Engineer', 'Intern']
         }
     ]).then( response => {
         switch (response.position){
@@ -77,7 +77,7 @@ function addMembers(answers){
                         }
                     }
                 ]).then( res => {
-                    let newMember = new Manager(response.name, response.position, response.id, response.email, res.officeNumber);
+                    let newMember = new Manager(response.name, response.id, response.email, res.officeNumber, response.position);
                     // console.log(newMember);
                     allEmployees.push(newMember);
                     idArray.push(response.id);
@@ -99,7 +99,7 @@ function addMembers(answers){
                         }
                     }
                 ]).then(res => {
-                    let newMember= new Engineer(response.name, response.position, response.id, response.email, res.github);
+                    let newMember= new Engineer(response.name, response.id, response.email, res.github, response.position);
                     // console.log(newMember);
                     allEmployees.push(newMember);
                     idArray.push(response.id);
@@ -121,7 +121,7 @@ function addMembers(answers){
                         }
                     }
                 ]).then(res => {
-                    let newMember = new Intern(response.name, response.position, response.id, response.email, res.school);
+                    let newMember = new Intern(response.name, response.id, response.email, res.school, response.position);
                     // console.log(newMember);
                     allEmployees.push(newMember);
                     idArray.push(response.id);
@@ -147,7 +147,7 @@ function addMoreMembers(){
         } else if (response.addMore === 'No'){
             let renderedEmployees = render(allEmployees);
             fs.writeFile(outputPath, renderedEmployees, (err) =>
-              err ? console.error(err) : console.log('Commit logged!')
+              err ? console.error(err) : console.log('team.html file created! Check the "output/" folder for the finished html!')
             );
         };
     });
